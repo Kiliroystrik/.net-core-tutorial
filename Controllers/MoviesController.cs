@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Mvc.Models;
+using MvcMovie.Models;
 
 namespace MvcMovie.Controllers
 {
     public class MoviesController : Controller
     {
-        private readonly MvcMovieContext _context;
+        private readonly MvcMovie.Data.MvcMovieContext _context;
 
-        public MoviesController(MvcMovieContext context)
+        public MoviesController(MvcMovie.Data.MvcMovieContext context)
         {
             _context = context;
         }
@@ -21,9 +21,9 @@ namespace MvcMovie.Controllers
         // GET: Movies
         public async Task<IActionResult> Index()
         {
-              return _context.Movie != null ? 
-                          View(await _context.Movie.ToListAsync()) :
-                          Problem("Entity set 'MvcMovieContext.Movie'  is null.");
+            return _context.Movie != null ?
+                        View(await _context.Movie.ToListAsync()) :
+                        Problem("Entity set 'MvcMovieContext.Movie'  is null.");
         }
 
         // GET: Movies/Details/5
@@ -149,14 +149,14 @@ namespace MvcMovie.Controllers
             {
                 _context.Movie.Remove(movie);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool MovieExists(int id)
         {
-          return (_context.Movie?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Movie?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
